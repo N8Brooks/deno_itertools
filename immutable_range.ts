@@ -49,7 +49,7 @@ export class Range {
   /** Iterate the described range */
   *[Symbol.iterator](): Generator<number> {
     // Based on cpython implementation
-    if ((this.#start - this.#stop) / this.#step >= 0) {
+    if (this.length === 0) {
       return;
     }
     let value = this.#start;
@@ -63,6 +63,11 @@ export class Range {
   /** First element outside of the `Range` that is congruent to `#start` modulo `#step` */
   get #sentinel(): number {
     return this.#stop + mod(this.#start - this.#stop, this.#step);
+  }
+
+  /** The number of elements in the `Range` */
+  get length(): number {
+    return Math.max(0, Math.ceil((this.#stop - this.#start) / this.#step));
   }
 
   /** Represented `Range` as a string */

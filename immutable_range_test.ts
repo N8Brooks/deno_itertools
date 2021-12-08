@@ -54,11 +54,20 @@ for (
 
   Deno.test(name, async (t) => {
     await t.step("arrays", () => {
-      assertEquals([...range], expected);
+      const actual = [...range];
+      assertEquals(actual, expected);
+    });
+
+    await t.step("length", () => {
+      const actualLength = range.length;
+      const expectedLength = expected.length;
+      assertStrictEquals(actualLength, expectedLength);
     });
 
     await t.step("to string", () => {
-      assertStrictEquals(range.toString(), name);
+      const actualToString = range.toString();
+      const expectedToString = name;
+      assertStrictEquals(actualToString, expectedToString);
     });
   });
 }
