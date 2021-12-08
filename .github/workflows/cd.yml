@@ -1,0 +1,36 @@
+name: cd
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v2
+
+      - name: Set-up
+        uses: denoland/setup-deno@v1.0.0
+
+      - name: Test
+        run: deno test --coverage=cov
+
+      - name: Generate Coverage
+        shell: bash
+        run: deno coverage cov --lcov --exclude="test\\.(ts|js)" > cov.lcov
+
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v2
+        with:
+          name: ${{ matrix.os }}-${{ matrix.deno }}
+          files: cov.lcov
+
+      - name: Remove Coverage
+        shell: bash
+        run: |
+          rm -rf cov
+          rm cov.lcov
