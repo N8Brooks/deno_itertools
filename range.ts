@@ -56,7 +56,7 @@ export class Range {
     const step = this.#step;
     const modulo = mod(this.#start - this.#stop, this.#step);
     const sentinel = this.#stop + modulo - step;
-    let value = this.length ? this.#start - step : sentinel;
+    let value = this.sign === 0 ? sentinel : this.#start - step;
     return {
       next(): IteratorResult<number> {
         return value === sentinel
