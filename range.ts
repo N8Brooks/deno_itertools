@@ -79,8 +79,8 @@ export class Range {
 
   /** Whether the range is ascending = `1`, descending = `-1`, or empty = `-0 | 0` */
   get #sign(): number {
-    const sign = Math.sign(stop - start);
-    return sign === Math.sign(step) ? sign : 0;
+    const sign = Math.sign(this.#stop - this.#start);
+    return sign === Math.sign(this.#step) ? sign : 0;
   }
 
   /** The number of elements in the `Range` */
