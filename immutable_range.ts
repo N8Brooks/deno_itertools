@@ -14,6 +14,9 @@ export class Range {
   /** The amount added to `#value` per iteration */
   readonly #step: number;
 
+  /** Whether the range is ascending, descending, or empty */
+  readonly #sign: number;
+
   constructor(start: number, stop: number, step: number) {
     if (step === 0) {
       throw new RangeError("Range `step` may not be `0`");
@@ -28,6 +31,8 @@ export class Range {
     this.#start = start;
     this.#stop = stop;
     this.#step = step;
+    const sign = Math.sign(stop - start);
+    this.#sign = sign === Math.sign(step) ? sign : 0;
   }
 
   /** Yields integers from `0` to `stop` */
@@ -68,6 +73,31 @@ export class Range {
   /** The number of elements in the `Range` */
   get length(): number {
     return Math.max(0, Math.ceil((this.#stop - this.#start) / this.#step));
+  }
+
+  /** Determines whether the `Range` includes a certain value */
+  includes(element: number): boolean {
+    return this.#isContained(element) && this.#isCongruent(element);
+  }
+
+  /** Element is between the given range */
+  #isContained(element: number): boolean {
+    switch (this.#sign) {
+      case -1:
+        return this.#stop < element && element <= this.#start;
+      case 0:
+        return false;
+      case 1:
+        return this.#start <= element && element < this.#stop;
+      default:
+        throw new Error("Unreachable: sign is not `-1`, `0`, or `1`");
+    }
+  }
+
+  /** Is the given element congruent to `#start` modulo `#step` */
+  #isCongruent(element: number): boolean {
+    // Modulus or remainder is irrelevant since `0 === -0`
+    return (this.#start - element) % this.#step === 0;
   }
 
   /** Represented `Range` as a string */

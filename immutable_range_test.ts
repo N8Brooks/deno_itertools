@@ -45,6 +45,11 @@ Deno.test("safe step", () => {
   assertEquals(actual, expected);
 });
 
+Deno.test("includes NaN", () => {
+  const actual = Range.from(10).includes(NaN);
+  assertStrictEquals(actual, false);
+});
+
 for (
   const [start, stop, step] of permutationsWithReplacement(SAFE_PARAMETERS, 3)
 ) {
@@ -62,6 +67,25 @@ for (
       const actualLength = range.length;
       const expectedLength = expected.length;
       assertStrictEquals(actualLength, expectedLength);
+    });
+
+    await t.step("includes", async (t) => {
+      for (
+        const element of [
+          start - 7,
+          start,
+          start + 8,
+          stop - 8,
+          stop,
+          stop + 8,
+        ]
+      ) {
+        await t.step(element.toString(), () => {
+          const actualIncludes = range.includes(element);
+          const expectedIncludes = expected.includes(element);
+          assertStrictEquals(actualIncludes, expectedIncludes);
+        });
+      }
     });
 
     await t.step("to string", () => {
