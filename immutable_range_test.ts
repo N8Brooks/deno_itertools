@@ -45,9 +45,16 @@ Deno.test("safe step", () => {
   assertEquals(actual, expected);
 });
 
-Deno.test("includes NaN", () => {
-  const actual = Range.from(10).includes(NaN);
-  assertStrictEquals(actual, false);
+Deno.test("NaN", async (t) => {
+  await t.step("includes", () => {
+    const actual = Range.from(10).includes(NaN);
+    assertStrictEquals(actual, false);
+  });
+
+  await t.step("at", () => {
+    const actual = Range.from(10).at(NaN);
+    assertStrictEquals(actual, undefined);
+  });
 });
 
 for (
@@ -66,6 +73,7 @@ for (
     await t.step("reverse", () => {
       const reverseActual = [...range.reverse()];
       const reverseExpected = [...expected].reverse();
+      assertEquals(reverseActual, reverseExpected);
     });
 
     await t.step("length", () => {
@@ -75,20 +83,21 @@ for (
     });
 
     await t.step("includes", async (t) => {
-      for (
-        const element of [
-          start - 7,
-          start,
-          start + 8,
-          stop - 8,
-          stop,
-          stop + 8,
-        ]
-      ) {
+      for (const element of severalElements(start, stop, step)) {
         await t.step(element.toString(), () => {
           const actualIncludes = range.includes(element);
           const expectedIncludes = expected.includes(element);
           assertStrictEquals(actualIncludes, expectedIncludes);
+        });
+      }
+    });
+
+    await t.step("at", async (t) => {
+      for (const index of severalIndices(start, stop, step)) {
+        await t.step(index.toString(), () => {
+          const actualAt = range.at(index);
+          const expectedAt = expected.at(index);
+          assertStrictEquals(actualAt, expectedAt);
         });
       }
     });
@@ -126,4 +135,34 @@ function rangeEquivalent(start: number, stop: number, step: number): number[] {
   }
 
   throw new Error("Unreachable");
+}
+
+function severalElements(start: number, stop: number, step: number) {
+  return [
+    start - step,
+    start - 7,
+    start,
+    start + 8,
+    start + step,
+    stop - 8,
+    stop - step,
+    stop,
+    stop + 8,
+    stop + step,
+  ];
+}
+
+function severalIndices(start: number, stop: number, step: number) {
+  const length = Math.ceil((stop - start) / step);
+  return [
+    -868,
+    -length,
+    -Math.floor(length / 2),
+    -1,
+    0,
+    1,
+    Math.floor((length) / 2),
+    length - 1,
+    337,
+  ];
 }

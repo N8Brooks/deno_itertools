@@ -108,6 +108,16 @@ export class Range {
     return (this.#start - element) % this.#step === 0;
   }
 
+  /** Returns the `n`th element of the sequence or `undefined` */
+  at(n: number): number | undefined {
+    if (!Number.isSafeInteger(n)) {
+      return undefined;
+    }
+    const index = n < 0 ? n + this.length : n;
+    const element = this.#start + this.#step * index;
+    return this.#isContained(element) ? element : undefined;
+  }
+
   /** Represented `Range` as a string */
   toString(): string {
     return `Range(${this.#start}, ${this.#stop}, ${this.#step})`;
