@@ -23,7 +23,7 @@ export class Range {
       !Number.isSafeInteger(stop) ||
       !Number.isSafeInteger(step)
     ) {
-      throw new RangeError(`Range() parameters must be safe integers`);
+      throw new RangeError("Range parameters must be safe integers");
     }
     this.#start = start;
     this.#stop = stop;
