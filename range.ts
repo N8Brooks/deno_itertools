@@ -115,12 +115,9 @@ export class Range {
 
   /** Returns the `n`th element of the sequence or `undefined` */
   at(n: number): number | undefined {
-    if (!Number.isSafeInteger(n)) {
-      return undefined;
-    }
     const index = n < 0 ? n + this.length : n;
     const element = this.#start + this.#step * index;
-    return this.#isContained(element) ? element : undefined;
+    return this.includes(element) ? element : undefined;
   }
 
   /** Returns the index of the element or `-1` if it does not exist */
