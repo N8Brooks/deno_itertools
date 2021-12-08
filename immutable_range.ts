@@ -98,7 +98,7 @@ export class Range {
       case 1:
         return this.#start <= element && element < this.#stop;
       default:
-        throw new Error("Unreachable: sign is not `-1`, `0`, or `1`");
+        throw new Error("Unreachable");
     }
   }
 
@@ -116,6 +116,16 @@ export class Range {
     const index = n < 0 ? n + this.length : n;
     const element = this.#start + this.#step * index;
     return this.#isContained(element) ? element : undefined;
+  }
+
+  /** Returns the index of the element or `-1` if it does not exist */
+  indexOf(_element: number): number {
+    throw new Error("Unimplemented");
+  }
+
+  /** Returns a shallow copy of the `Range` */
+  slice(_start?: number, _stop?: number): Range {
+    throw new Error("Unimplemented");
   }
 
   /** Represented `Range` as a string */
