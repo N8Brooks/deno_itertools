@@ -134,4 +134,9 @@ export class Range {
   toString(): string {
     return `Range(${this.#start}, ${this.#stop}, ${this.#step})`;
   }
+
+  /** Delegate for `toString` */
+  valueOf(): string {
+    return this.toString();
+  }
 }
