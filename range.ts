@@ -48,10 +48,10 @@ export class Range {
 
   /** Iterate the described range */
   [Symbol.iterator](): IterableIterator<number> {
-    const start = this.#start;
-    const sentinel = this.#sentinel;
     const step = this.#step;
-    let value = this.#sign === 0 ? sentinel : start - step;
+    const sentinel = this.#sentinel;
+    const start = this.#start - step;
+    let value = this.#sign === 0 ? sentinel : start;
     return {
       next(): IteratorResult<number> {
         return value === sentinel
