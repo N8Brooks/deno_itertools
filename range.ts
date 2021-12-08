@@ -133,7 +133,7 @@ export class Range {
     throw new Error("Unimplemented");
   }
 
-  /** Represented `Range` as a string */
+  /** Represent `Range` as a string */
   toString(): string {
     return `Range(${this.#start}, ${this.#stop}, ${this.#step})`;
   }
