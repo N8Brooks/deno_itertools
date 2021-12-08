@@ -102,6 +102,16 @@ for (
       }
     });
 
+    await t.step("indexOf", async (t) => {
+      for (const element of severalIndices(start, stop, step)) {
+        await t.step(element.toString(), () => {
+          const actualIndexOf = range.indexOf(element);
+          const expectedIndexOf = expected.indexOf(element);
+          assertStrictEquals(actualIndexOf, expectedIndexOf);
+        });
+      }
+    });
+
     await t.step("to string", () => {
       const actualToString = range.toString();
       const expectedToString = name;

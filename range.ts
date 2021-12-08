@@ -123,8 +123,8 @@ export class Range {
   }
 
   /** Returns the index of the element or `-1` if it does not exist */
-  indexOf(_element: number): number {
-    throw new Error("Unimplemented");
+  indexOf(element: number): number {
+    return this.includes(element) ? (element - this.#start) / this.#step : -1;
   }
 
   /** Returns a shallow copy of the `Range` */
