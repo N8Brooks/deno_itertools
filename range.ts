@@ -48,9 +48,9 @@ export class Range {
 
   /** Iterate the described range */
   [Symbol.iterator](): IterableIterator<number> {
-    const step = this.#step;
+    const start = this.#start - this.#step;
     const sentinel = this.#sentinel;
-    const start = this.#start - step;
+    const step = this.#step;
     let value = this.#sign === 0 ? sentinel : start;
     return {
       next(): IteratorResult<number> {
