@@ -53,9 +53,10 @@ export class Range {
 
   /** Iterate the described range */
   [Symbol.iterator](): IterableIterator<number> {
+    const start = this.#start;
+    const sentinel = this.#sentinel;
     const step = this.#step;
-    const sentinel = this.#sentinel - step; // last value of range
-    let value = this.#sign === 0 ? sentinel : this.#start - step;
+    let value = this.#sign === 0 ? sentinel : start - step;
     return {
       next(): IteratorResult<number> {
         return value === sentinel
@@ -70,15 +71,15 @@ export class Range {
 
   /** Returns the `Range` reversed out-of-place */
   reverse(): Range {
-    const start = this.#sentinel - this.#step;
+    const start = this.#sentinel;
     const stop = this.#start - this.#step;
     const step = -this.#step;
     return new Range(start, stop, step);
   }
 
-  /** First element outside of the `Range` that is congruent to `#start` modulo `#step` */
+  /** A prior value to `#stop` that is congruent to `#start` mod `#step` */
   get #sentinel(): number {
-    return this.#stop + mod(this.#start - this.#stop, this.#step);
+    return this.#stop + mod(this.#start - this.#stop, this.#step) - this.#step;
   }
 
   /** The number of elements in the `Range` */
