@@ -14,9 +14,6 @@ export class Range {
   /** The amount added to `#value` per iteration */
   readonly #step: number;
 
-  /** Whether the range is ascending, descending, or empty */
-  readonly #sign: number;
-
   constructor(start: number, stop: number, step: number) {
     if (step === 0) {
       throw new RangeError("Range `step` may not be `0`");
@@ -31,8 +28,6 @@ export class Range {
     this.#start = start;
     this.#stop = stop;
     this.#step = step;
-    const sign = Math.sign(stop - start);
-    this.#sign = sign === Math.sign(step) ? sign : 0;
   }
 
   /** Yields integers from `0` to `stop` */
@@ -80,6 +75,12 @@ export class Range {
   /** A prior value to `#stop` that is congruent to `#start` mod `#step` */
   get #sentinel(): number {
     return this.#stop + mod(this.#start - this.#stop, this.#step) - this.#step;
+  }
+
+  /** Whether the range is ascending = `1`, descending = `-1`, or empty = `-0 | 0` */
+  get #sign(): number {
+    const sign = Math.sign(this.#stop - this.#start);
+    return sign === Math.sign(this.#step) ? sign : 0;
   }
 
   /** The number of elements in the `Range` */
