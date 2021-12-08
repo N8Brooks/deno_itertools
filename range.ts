@@ -52,17 +52,21 @@ export class Range {
   }
 
   /** Iterate the described range */
-  *[Symbol.iterator](): Generator<number> {
-    // Based on cpython implementation
-    if (this.length === 0) {
-      return;
-    }
-    let value = this.#start;
-    const sentinel = this.#sentinel;
-    while (value !== sentinel) {
-      yield value;
-      value += this.#step;
-    }
+  [Symbol.iterator](): IterableIterator<number> {
+    const step = this.#step;
+    const modulo = mod(this.#start - this.#stop, this.#step);
+    const sentinel = this.#stop + modulo - step;
+    let value = this.length ? this.#start - step : sentinel;
+    return {
+      next(): IteratorResult<number> {
+        return value === sentinel
+          ? { value: undefined, done: true }
+          : { value: value += step };
+      },
+      [Symbol.iterator]() {
+        return this;
+      },
+    };
   }
 
   /** Returns the `Range` reversed out-of-place */

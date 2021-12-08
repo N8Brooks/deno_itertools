@@ -3,7 +3,7 @@ import {
   assertStrictEquals,
   assertThrows,
 } from "https://deno.land/std@0.110.0/testing/asserts.ts";
-import { Range } from "./immutable_range.ts";
+import { Range } from "./range.ts";
 import { permutationsWithReplacement } from "https://deno.land/x/combinatorics@1.0.1/permutations_with_replacement.ts";
 
 const SAFE_PARAMETERS = [
@@ -127,7 +127,6 @@ function rangeEquivalent(start: number, stop: number, step: number): number[] {
 
   if (sign === 1) {
     const ret = [];
-    console.log(start, stop, step);
     for (let value = start; value < stop; value += step) {
       ret.push(value);
     }
