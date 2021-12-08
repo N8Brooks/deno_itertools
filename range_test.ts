@@ -117,6 +117,12 @@ for (
       const expectedToString = name;
       assertStrictEquals(actualToString, expectedToString);
     });
+
+    await t.step("value of", () => {
+      const actualValueOf = range.valueOf();
+      const expectedValueOf = name;
+      assertStrictEquals(actualValueOf, expectedValueOf);
+    });
   });
 }
 
