@@ -63,6 +63,11 @@ for (
       assertEquals(actual, expected);
     });
 
+    await t.step("reverse", () => {
+      const reverseActual = [...range.reverse()];
+      const reverseExpected = [...expected].reverse();
+    });
+
     await t.step("length", () => {
       const actualLength = range.length;
       const expectedLength = expected.length;

@@ -65,6 +65,14 @@ export class Range {
     }
   }
 
+  /** Returns the `Range` reversed out-of-place */
+  reverse(): Range {
+    const start = this.#sentinel - this.#step;
+    const stop = this.#start - this.#step;
+    const step = -this.#step;
+    return new Range(start, stop, step);
+  }
+
   /** First element outside of the `Range` that is congruent to `#start` modulo `#step` */
   get #sentinel(): number {
     return this.#stop + mod(this.#start - this.#stop, this.#step);
