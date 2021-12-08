@@ -17,7 +17,7 @@ jobs:
         uses: denoland/setup-deno@v1.0.0
 
       - name: Test
-        run: deno test --coverage=cov
+        run: deno test --coverage=cov --unstable
 
       - name: Generate Coverage
         shell: bash
