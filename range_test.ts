@@ -4,7 +4,7 @@ import {
   assertThrows,
 } from "https://deno.land/std@0.110.0/testing/asserts.ts";
 import { Range } from "./range.ts";
-import { permutationsWithReplacement } from "https://deno.land/x/combinatorics@1.0.1/permutations_with_replacement.ts";
+import { combinationsWithReplacement } from "https://deno.land/x/combinatorics@1.0.1/combinations_with_replacement.ts";
 
 const SAFE_PARAMETERS = [
   -90,
@@ -55,10 +55,20 @@ Deno.test("NaN", async (t) => {
     const actual = Range.from(10).at(NaN);
     assertStrictEquals(actual, undefined);
   });
+
+  await t.step("slice", () => {
+    const actual = [...Range.from(10).slice(NaN, 100)];
+    assertEquals(actual, []);
+  });
+
+  await t.step("slice", () => {
+    const actual = [...Range.from(10).slice(-100, NaN)];
+    assertEquals(actual, []);
+  });
 });
 
 for (
-  const [start, stop, step] of permutationsWithReplacement(SAFE_PARAMETERS, 3)
+  const [start, stop, step] of combinationsWithReplacement(SAFE_PARAMETERS, 3)
 ) {
   const range = Range.from(start, stop, step);
   const expected = rangeEquivalent(start, stop, step);
@@ -109,6 +119,18 @@ for (
           const expectedIndexOf = expected.indexOf(element);
           assertStrictEquals(actualIndexOf, expectedIndexOf);
         });
+      }
+    });
+
+    await t.step("slice", async (t) => {
+      for (const i of fewIndices(start, stop, step)) {
+        for (const j of fewIndices(start, stop, step)) {
+          await t.step(`[${i}, ${j}]`, () => {
+            const actualSlice = [...range.slice(i, j)];
+            const expectedSlice = expected.slice(i, j);
+            assertEquals(actualSlice, expectedSlice);
+          });
+        }
       }
     });
 
@@ -164,6 +186,17 @@ function severalElements(start: number, stop: number, step: number) {
     stop,
     stop + 8,
     stop + step,
+  ];
+}
+
+function fewIndices(start: number, stop: number, step: number) {
+  const length = Math.ceil((stop - start) / step);
+  return [
+    -300,
+    0,
+    5,
+    length - 1,
+    300,
   ];
 }
 

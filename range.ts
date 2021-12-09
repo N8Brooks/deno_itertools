@@ -3,6 +3,14 @@ const mod = (dividend: number, divisor: number): number => {
   return ((dividend % divisor) + divisor) % divisor;
 };
 
+/** Bound x to a certain range */
+const bound = (x: number, boundary: number) => {
+  x = Math.trunc(x);
+  x = x < 0 ? x + boundary : x;
+  x = Math.min(x, boundary);
+  return Math.max(x, 0);
+};
+
 /** Represents a range of integers */
 export class Range {
   /** Starting value for the sequence */
@@ -125,9 +133,24 @@ export class Range {
     return this.includes(element) ? (element - this.#start) / this.#step : -1;
   }
 
-  /** Returns a shallow copy of the `Range` */
-  slice(_start?: number, _stop?: number): Range {
-    throw new Error("Unimplemented");
+  /** Returns a copy of the `Range` */
+  slice(): Range;
+
+  /** Returns a copy of the `Range` beginning with index `i` */
+  slice(i: number): Range;
+
+  /** Returns a copy of the `Range` from indices `i` to `j` */
+  slice(i: number, j: number): Range;
+
+  /** Slice implementation */
+  slice(i = 0, j = Infinity): Range {
+    if (isNaN(i) || isNaN(j)) {
+      return new Range(this.#start, this.#start, this.#step);
+    }
+    const boundary = this.length;
+    const start = this.#start + this.#step * bound(i, boundary);
+    const stop = this.#start + this.#step * bound(j, boundary);
+    return new Range(start, stop, this.#step);
   }
 
   /** Represent `Range` as a string */
