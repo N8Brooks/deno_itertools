@@ -9,7 +9,7 @@ combinatorical iterators for Deno check out
 
 ### count
 
-Iterates evently spaced numbers indefinitely.
+Iterates evenly spaced numbers indefinitely.
 
 ```ts
 import { count } from "./count.ts";
