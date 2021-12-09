@@ -7,7 +7,7 @@ combinatorical iterators for Deno check out
 
 ## Usage
 
-### Count
+### count
 
 Iterates evently spaced numbers indefinitely.
 
@@ -43,4 +43,25 @@ Aggregates elements from each iterable.
 import { zip } from "./zip.ts";
 
 zip("abcdefghi", [1, 2, 3, 5, 6, 7, 8, 9]); // ['a', 1], ['b', 2], ['c', 3], ..., ['i', 9]
+```
+
+Can also be used to calculate a transpose of a matrix.
+
+```ts
+import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { zip } from "./zip.ts";
+
+const matrix = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [8, 9, 10],
+];
+
+const transpose = [...zip(...matrix)];
+
+assertEquals(transpose, [
+  [1, 4, 8],
+  [2, 5, 9],
+  [3, 6, 10],
+]);
 ```
