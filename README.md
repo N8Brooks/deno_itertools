@@ -45,7 +45,7 @@ import { zip } from "./zip.ts";
 zip("abcdefghi", [1, 2, 3, 5, 6, 7, 8, 9]); // ['a', 1], ['b', 2], ['c', 3], ..., ['i', 9]
 ```
 
-Can also be used to calculate a transpose of a matrix.
+Can also be used to calculate the transpose of a matrix.
 
 ```ts
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
